@@ -37,6 +37,7 @@ public class UsersDataFetcher {
     @DgsMutation
     public User updateUser(@InputArgument String id, @InputArgument UpdateUserInput input) {
         var user = usersRepository.getUserById(id);
+
         if (input.getName() != null) {
             user.setName(input.getName());
         }
