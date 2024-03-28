@@ -3,11 +3,13 @@ package com.example.users.db.repositories;
 import com.example.users.db.entities.User;
 import com.example.users.exceptions.NotFoundException;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
 
+@Repository
 public class UsersRepositoryImpl implements UsersRepository {
 
     final HashMap<UUID, User> userById = new HashMap<>();
