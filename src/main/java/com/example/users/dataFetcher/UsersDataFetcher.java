@@ -3,7 +3,6 @@ package com.example.users.dataFetcher;
 import com.example.users.codegen.types.CreateUserInput;
 import com.example.users.codegen.types.UpdateUserInput;
 import com.example.users.codegen.types.User;
-import com.example.users.db.repositories.UsersRepository;
 import com.example.users.services.UsersService;
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsMutation;
