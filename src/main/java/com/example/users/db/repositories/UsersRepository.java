@@ -14,4 +14,6 @@ public interface UsersRepository {
     void updateUser(User user);
 
     void deleteUser(String id);
+
+    void clear();
 }

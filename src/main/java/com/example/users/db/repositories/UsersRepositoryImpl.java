@@ -50,4 +50,9 @@ public class UsersRepositoryImpl implements UsersRepository {
     public void deleteUser(String id) {
         userById.remove(id.toString());
     }
+
+    @Override
+    public void clear() {
+        userById.clear();
+    }
 }
