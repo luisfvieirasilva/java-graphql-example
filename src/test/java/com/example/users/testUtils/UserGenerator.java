@@ -2,7 +2,7 @@ package com.example.users.testUtils;
 
 import com.example.users.codegen.types.User;
 
-public class DTOGenerator {
+public class UserGenerator {
 
     private static int userCounter = 0;
 

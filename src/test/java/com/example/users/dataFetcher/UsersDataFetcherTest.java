@@ -5,7 +5,7 @@ import com.example.users.codegen.types.CreateUserInput;
 import com.example.users.codegen.types.UpdateUserInput;
 import com.example.users.codegen.types.User;
 import com.example.users.services.UsersService;
-import com.example.users.testUtils.DTOGenerator;
+import com.example.users.testUtils.UserGenerator;
 import com.netflix.graphql.dgs.DgsQueryExecutor;
 import com.netflix.graphql.dgs.autoconfig.DgsAutoConfiguration;
 import com.netflix.graphql.dgs.client.codegen.GraphQLQueryRequest;
@@ -30,7 +30,7 @@ public class UsersDataFetcherTest {
 
     @Test
     public void whenCallUsersQueryExpectGetAllUsers() {
-        var fakeUsers = List.of(DTOGenerator.generateFakeUser(), DTOGenerator.generateFakeUser());
+        var fakeUsers = List.of(UserGenerator.generateDTOUser(), UserGenerator.generateDTOUser());
         Mockito.when(mockUsersService.getAllUsers()).thenReturn(fakeUsers);
 
         var request = new GraphQLQueryRequest(UsersGraphQLQuery.newRequest().build(),
@@ -43,7 +43,7 @@ public class UsersDataFetcherTest {
 
     @Test
     public void whenCallUserQueryExpectGetCorrectUser() {
-        var fakeUser = DTOGenerator.generateFakeUser();
+        var fakeUser = UserGenerator.generateDTOUser();
         Mockito.when(mockUsersService.getUserById(fakeUser.getId())).thenReturn(fakeUser);
 
         var request = new GraphQLQueryRequest(UserGraphQLQuery.newRequest().id(fakeUser.getId()).build(),
@@ -56,7 +56,7 @@ public class UsersDataFetcherTest {
 
     @Test
     public void whenCallCreateUserMutationExpectCorrectUser() {
-        var fakeUser = DTOGenerator.generateFakeUser();
+        var fakeUser = UserGenerator.generateDTOUser();
         Mockito.when(mockUsersService.createUser(fakeUser.getName(), fakeUser.getEmail())).thenReturn(fakeUser);
 
         var request =
@@ -72,7 +72,7 @@ public class UsersDataFetcherTest {
 
     @Test
     public void whenCallUpdateUserMutationExpectCorrectUser() {
-        var fakeUser = DTOGenerator.generateFakeUser();
+        var fakeUser = UserGenerator.generateDTOUser();
         Mockito.when(mockUsersService.updateUser(fakeUser.getId(), fakeUser.getName(), null)).thenReturn(fakeUser);
 
         var request =
@@ -89,7 +89,7 @@ public class UsersDataFetcherTest {
 
     @Test
     public void whenCallDeleteUserMutationExpectCorrectUser() {
-        var fakeUser = DTOGenerator.generateFakeUser();
+        var fakeUser = UserGenerator.generateDTOUser();
         Mockito.when(mockUsersService.deleteUserById(fakeUser.getId())).thenReturn(fakeUser);
 
         var request =
