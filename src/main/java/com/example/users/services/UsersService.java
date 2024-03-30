@@ -45,7 +45,7 @@ public class UsersService {
 
     public User deleteUserById(String id) {
         var user = usersRepository.getUserById(id);
-        usersRepository.deleteUser(user.getId());
+        usersRepository.deleteUser(user.getId().toString());
         return DTOFromToEntity.toDTO(user);
     }
 }

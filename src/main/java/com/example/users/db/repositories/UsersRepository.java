@@ -2,7 +2,7 @@ package com.example.users.db.repositories;
 
 import com.example.users.db.entities.User;
 
-import java.util.*;
+import java.util.Collection;
 
 public interface UsersRepository {
     Collection<User> getAllUsers();
@@ -13,5 +13,5 @@ public interface UsersRepository {
 
     void updateUser(User user);
 
-    void deleteUser(UUID id);
+    void deleteUser(String id);
 }

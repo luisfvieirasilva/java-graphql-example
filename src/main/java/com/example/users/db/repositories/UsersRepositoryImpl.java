@@ -7,12 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.UUID;
 
 @Repository
 public class UsersRepositoryImpl implements UsersRepository {
 
-    final HashMap<UUID, User> userById = new HashMap<>();
+    final HashMap<String, User> userById = new HashMap<>();
 
     @NotNull
     @Override
@@ -23,7 +22,7 @@ public class UsersRepositoryImpl implements UsersRepository {
     @NotNull
     @Override
     public User getUserById(String id) {
-        var user = userById.get(UUID.fromString(id));
+        var user = userById.get(id);
         if (user == null) {
             throw new NotFoundException("User not found");
         }
@@ -35,20 +34,20 @@ public class UsersRepositoryImpl implements UsersRepository {
     @Override
     public User createUser(String name, String email) {
         User user = new User(name, email);
-        userById.put(user.getId(), user);
+        userById.put(user.getId().toString(), user);
         return user;
     }
 
     @Override
     public void updateUser(User user) {
-        if (!userById.containsKey(user.getId())) {
+        if (!userById.containsKey(user.getId().toString())) {
             throw new NotFoundException("User not found");
         }
-        userById.put(user.getId(), user);
+        userById.put(user.getId().toString(), user);
     }
 
     @Override
-    public void deleteUser(UUID id) {
-        userById.remove(id);
+    public void deleteUser(String id) {
+        userById.remove(id.toString());
     }
 }
