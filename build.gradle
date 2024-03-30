@@ -32,8 +32,27 @@ dependencies {
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        filter {
+            includeTestsMatching "*Test"
+            excludeTestsMatching "*IntegrationTest"
+        }
+    }
 }
+
+def integrationTest = tasks.register("integrationTest", Test) {
+    group = "verification"
+    description = "Runs the integration tests."
+    useJUnitPlatform {
+        filter {
+            includeTestsMatching '*IntegrationTest'
+        }
+    }
+}
+tasks.named('check') {
+    dependsOn integrationTest
+}
+
 
 generateJava {
     schemaPaths = ["${projectDir}/src/main/resources/schema"]
