@@ -1,40 +1,53 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.2.4'
-	id 'io.spring.dependency-management' version '1.1.4'
-	id 'com.netflix.dgs.codegen' version '6.1.5'
+    id 'java'
+    id 'org.springframework.boot' version '3.2.4'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'com.netflix.dgs.codegen' version '6.1.5'
+    id 'com.apollographql.apollo3' version '4.0.0-beta.5'
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '17'
+    sourceCompatibility = '17'
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencyManagement {
-	imports {
-		mavenBom('com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:latest.release')
-	}
+    imports {
+        mavenBom('com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:latest.release')
+    }
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter'
+    implementation 'com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation("com.apollographql.apollo3:apollo-runtime-java")
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 generateJava {
-	schemaPaths = ["${projectDir}/src/main/resources/schema"]
-	packageName = 'com.example.users.codegen'
-	generateClient = true
+    schemaPaths = ["${projectDir}/src/main/resources/schema"]
+    packageName = 'com.example.users.codegen'
+    generateClient = true
+}
+
+apollo {
+    service("test") {
+        srcDir(file("${projectDir}/src/test/graphql/test"))
+        packageName.set("com.example.test")
+        generateKotlinModels.set(false)
+        generateDataBuilders.set(true)
+        schemaFile.set(file("${projectDir}/src/main/resources/schema/schema.graphqls"))
+    }
 }
 
