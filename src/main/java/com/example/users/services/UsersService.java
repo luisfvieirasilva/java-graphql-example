@@ -2,7 +2,7 @@ package com.example.users.services;
 
 import com.example.users.codegen.types.User;
 import com.example.users.dataFetcher.converters.DTOFromToEntity;
-import com.example.users.db.repositories.UsersDbRepository;
+import com.example.users.db.repositories.UsersRepository;
 import com.example.users.exceptions.InvalidUUIDException;
 import com.example.users.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -15,9 +15,9 @@ import java.util.stream.StreamSupport;
 @Service
 public class UsersService {
 
-    private final UsersDbRepository usersRepository;
+    private final UsersRepository usersRepository;
 
-    public UsersService(UsersDbRepository usersRepository) {
+    public UsersService(UsersRepository usersRepository) {
         this.usersRepository = usersRepository;
     }
 
