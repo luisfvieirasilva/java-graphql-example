@@ -24,6 +24,12 @@ public class UserGenerator {
                 .email("user" + userCounter + "@email.com").build();
     }
 
+    public static com.example.users.db.entities.User generateDBUser() {
+        var userCounter = getNextUserCounter();
+        return new com.example.users.db.entities.User(UUID.randomUUID(), "User" + userCounter, "user" + userCounter +
+                "@email.com");
+    }
+
     private static String getNextUserCounter() {
         userCounter++;
         return Integer.toString(userCounter);
