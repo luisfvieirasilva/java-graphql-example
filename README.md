@@ -16,6 +16,12 @@ To run this project go to its root directory and them execute the following step
 2. Start web server
     - `./gradlew run`
 
+## Building the project
+
+To build the project run `./gradlew build`. This will run tests and build the project. If you're interested in only
+generating a WAR file you can run `./gradlew bootWar`. The generated WAR file will be located at `./build/libs`
+directory.
+
 ## Development
 
 ### Running tests
