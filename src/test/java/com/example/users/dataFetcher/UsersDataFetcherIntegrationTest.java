@@ -4,7 +4,7 @@ import com.example.test.*;
 import com.example.test.fragment.UserFragment;
 import com.example.test.type.CreateUserInput;
 import com.example.test.type.UpdateUserInput;
-import com.example.users.db.repositories.UsersRepository;
+import com.example.users.db.repositories.UsersDbRepository;
 import com.example.users.testUtils.SyncApolloClient;
 import com.example.users.testUtils.UserGenerator;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +15,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,17 +23,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UsersDataFetcherIntegrationTest {
 
-    private final UsersRepository usersRepository;
+    private final UsersDbRepository usersRepository;
     private final SyncApolloClient syncClient;
 
-    public UsersDataFetcherIntegrationTest(@Autowired UsersRepository usersRepository, @LocalServerPort Integer port) {
+    public UsersDataFetcherIntegrationTest(@Autowired UsersDbRepository usersRepository,
+            @LocalServerPort Integer port) {
         this.usersRepository = usersRepository;
         syncClient = new SyncApolloClient.Builder().serverUrl("http://localhost:" + port + "/graphql").build();
     }
 
     @BeforeEach
     public void setUp() {
-        usersRepository.clear();
+        usersRepository.deleteAll();
     }
 
     @Test
@@ -54,7 +56,15 @@ public class UsersDataFetcherIntegrationTest {
     }
 
     @Test
-    public void WhenCallUserQueryIfInvalidIdExpectNotFoundError() {
+    public void WhenCallUserQueryWithInvalidUUIDIdExpectBadRequestError() {
+        var response = syncClient.query(new UserQuery("invalidId"));
+
+        assertThat(response.dataOrThrow().user).isNull();
+        assertThat(response.errors).isNotEmpty();
+        assertThat(response.errors.get(0).getExtensions()).contains(entry("errorType", "BAD_REQUEST"));
+    }
+
+    public void WhenCallUserQueryWithNonExistentIdExpectNotFoundError() {
         var response = syncClient.query(new UserQuery("invalidId"));
 
         assertThat(response.dataOrThrow().user).isNull();
@@ -79,16 +89,27 @@ public class UsersDataFetcherIntegrationTest {
                 syncClient.mutate(new CreateUserMutation(
                                 CreateUserInput.builder().name(newUser.getName()).email(newUser.getEmail()).build()))
                         .dataOrThrow().createUser.userFragment;
-        
+
         //noinspection AssertBetweenInconvertibleTypes
         assertThat(responseUser).usingRecursiveComparison().ignoringFieldsMatchingRegexes("\\$.*").ignoringFields("id")
                 .isEqualTo(newUser);
     }
 
     @Test
-    public void WhenCallUpdateUserMutationIfInvalidIdExpectNotFoundError() {
+    public void WhenCallUpdateUserMutationWithInvalidUUIDIdExpectBadRequestError() {
         var response = syncClient.mutate(new UpdateUserMutation("invalidId", UpdateUserInput.builder().name(
                 "newName").build()));
+
+        assertThat(response.data).isNull();
+        assertThat(response.errors).isNotEmpty();
+        assertThat(response.errors.get(0).getExtensions()).contains(entry("errorType", "BAD_REQUEST"));
+    }
+
+    @Test
+    public void WhenCallUpdateUserMutationWithNonExistentIdExpectNotFoundError() {
+        var response = syncClient.mutate(
+                new UpdateUserMutation(UUID.randomUUID().toString(), UpdateUserInput.builder().name(
+                        "newName").build()));
 
         assertThat(response.data).isNull();
         assertThat(response.errors).isNotEmpty();
@@ -126,8 +147,17 @@ public class UsersDataFetcherIntegrationTest {
     }
 
     @Test
-    public void WhenCallDeleteUserMutationIfInvalidIdExpectNotFoundError() {
+    public void WhenCallDeleteUserMutationWithInvalidUUIDIdExpectBadRequestError() {
         var response = syncClient.mutate(new DeleteUserMutation("invalidId"));
+
+        assertThat(response.data).isNull();
+        assertThat(response.errors).isNotEmpty();
+        assertThat(response.errors.get(0).getExtensions()).contains(entry("errorType", "BAD_REQUEST"));
+    }
+
+    @Test
+    public void WhenCallDeleteUserMutationWithNonExistentIdExpectNotFoundError() {
+        var response = syncClient.mutate(new DeleteUserMutation(UUID.randomUUID().toString()));
 
         assertThat(response.data).isNull();
         assertThat(response.errors).isNotEmpty();

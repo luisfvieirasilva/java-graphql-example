@@ -3,26 +3,28 @@ package com.example.users.testUtils;
 import com.example.test.type.CreateUserInput;
 import com.example.users.codegen.types.User;
 
+import java.util.UUID;
+
 public class UserGenerator {
 
     private static int userCounter = 0;
 
     public static User generateDTOUser() {
-        var id = getNextUserId();
+        var userCounter = getNextUserCounter();
         return User.newBuilder()
-                .id(id)
-                .name("User" + id)
-                .email("user" + id + "@email.com").build();
+                .id(UUID.randomUUID().toString())
+                .name("User" + userCounter)
+                .email("user" + userCounter + "@email.com").build();
     }
 
     public static CreateUserInput generateApolloCreateUserInput() {
-        var id = getNextUserId();
+        var userCounter = getNextUserCounter();
         return CreateUserInput.builder()
-                .name("User" + id)
-                .email("user" + id + "@email.com").build();
+                .name("User" + userCounter)
+                .email("user" + userCounter + "@email.com").build();
     }
 
-    private static String getNextUserId() {
+    private static String getNextUserCounter() {
         userCounter++;
         return Integer.toString(userCounter);
     }
