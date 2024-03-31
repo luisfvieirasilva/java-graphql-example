@@ -1,0 +1,279 @@
+{
+	"info": {
+		"_postman_id": "cfa675a1-661b-4cc0-8d5a-93d294727d69",
+		"name": "JAVA/GraphQL Example",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15651805",
+		"_collection_link": "https://crimson-crater-277212.postman.co/workspace/Events-finder~89fe6a02-e14a-4b9b-b9d6-80a7375b02f3/collection/15651805-cfa675a1-661b-4cc0-8d5a-93d294727d69?action=share&source=collection_link&creator=15651805"
+	},
+	"item": [
+		{
+			"name": "Create User - Luis",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let responseData = pm.response.json();",
+							"",
+							"pm.collectionVariables.set(\"luis_id\", responseData.data.createUser.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation CreateUser {\n    createUser(input: { name: \"Luis\", email: \"luis@gmail.com\" }) {\n        id\n        name\n        email\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User - Artur",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let responseData = pm.response.json();",
+							"",
+							"pm.collectionVariables.set(\"artur_id\", responseData.data.createUser.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation CreateUser {\n    createUser(input: { name: \"Artur\", email: \"artur@gmail.com\" }) {\n        id\n        name\n        email\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query Users {\n    users {\n        id\n        name\n        email\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User - Luis",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query User($id: ID!) {\n    user(id: $id) {\n        id\n        name\n        email\n    }\n}",
+						"variables": "{\n    \"id\": \"{{luis_id}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User - Luis",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation UpdateUser($id: ID!, $input: UpdateUserInput) {\n    updateUser(id: $id, input: $input) {\n        id\n        name\n        email\n    }\n}",
+						"variables": "{\n    \"id\": \"{{luis_id}}\",\n    \"input\": {\n        \"name\": \"Luis new name\"\n    }\n}"
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query Users {\n    users {\n        id\n        name\n        email\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User - Luis",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation DeleteUser($id: ID!) {\n    deleteUser(id: $id) {\n        name\n        email\n        id\n    }\n}",
+						"variables": "{\n    \"id\": \"{{luis_id}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query Users {\n    users {\n        id\n        name\n        email\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "luis_id",
+			"value": ""
+		},
+		{
+			"key": "artur_id",
+			"value": ""
+		}
+	]
+}
