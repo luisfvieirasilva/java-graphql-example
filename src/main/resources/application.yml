@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: users
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQLDialect
+  datasource:
+    url: jdbc:mysql://localhost:3306/users_example
+    username: luis
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#  jpa:
+#    show-sql: true
