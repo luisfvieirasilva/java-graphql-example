@@ -7,8 +7,10 @@ import com.example.test.type.UpdateUserInput;
 import com.example.users.db.repositories.UsersRepository;
 import com.example.users.testUtils.SyncApolloClient;
 import com.example.users.testUtils.UserGenerator;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -19,16 +21,23 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UsersDataFetcherIntegrationTest {
 
-    private final UsersRepository usersRepository;
     private final SyncApolloClient syncClient;
+
+    private final UsersRepository usersRepository;
 
     public UsersDataFetcherIntegrationTest(@Autowired UsersRepository usersRepository,
             @LocalServerPort Integer port) {
         this.usersRepository = usersRepository;
         syncClient = new SyncApolloClient.Builder().serverUrl("http://localhost:" + port + "/graphql").build();
+    }
+
+    @AfterAll
+    public void tearDown() {
+        usersRepository.deleteAll();
     }
 
     @BeforeEach
