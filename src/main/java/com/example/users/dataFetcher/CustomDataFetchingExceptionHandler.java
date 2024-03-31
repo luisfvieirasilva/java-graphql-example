@@ -8,19 +8,25 @@ import graphql.execution.DataFetcherExceptionHandlerResult;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 @Component
-public class CustomDataFetchingExceptionHandler  extends DefaultDataFetcherExceptionHandler {
+public class CustomDataFetchingExceptionHandler extends DefaultDataFetcherExceptionHandler {
     @NotNull
     @Override
-    public CompletableFuture<DataFetcherExceptionHandlerResult> handleException(DataFetcherExceptionHandlerParameters handlerParameters) {
+    public CompletableFuture<DataFetcherExceptionHandlerResult> handleException(
+            DataFetcherExceptionHandlerParameters handlerParameters) {
 
         if (handlerParameters.getException() instanceof GraphqlException e) {
+
+            var debugInfo = new HashMap<String, Object>();
+            debugInfo.put("errorCode", e.getErrorCode().name());
 
             var graphqlError = TypedGraphQLError.newBuilder()
                     .errorType(e.getErrorType())
                     .message(e.getMessage())
+                    .debugInfo(debugInfo)
                     .path(handlerParameters.getPath())
                     .build();
 

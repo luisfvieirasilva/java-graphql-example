@@ -4,7 +4,7 @@ import com.example.users.codegen.types.User;
 import com.example.users.dataFetcher.converters.DTOFromToEntity;
 import com.example.users.db.repositories.UsersRepository;
 import com.example.users.exceptions.InvalidUUIDException;
-import com.example.users.exceptions.NotFoundException;
+import com.example.users.exceptions.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class UsersService {
     public User getUserById(String id) {
         var user = usersRepository.findById(convertToUUID(id));
         if (user.isEmpty()) {
-            throw new NotFoundException("User not found");
+            throw new UserNotFoundException(id);
         }
 
         return DTOFromToEntity.toDTO(user.get());
@@ -45,7 +45,7 @@ public class UsersService {
     public User updateUser(String id, String name, String email) {
         var optionalUser = usersRepository.findById(convertToUUID(id));
         if (optionalUser.isEmpty()) {
-            throw new NotFoundException("User not found");
+            throw new UserNotFoundException(id);
         }
 
         var user = optionalUser.get();

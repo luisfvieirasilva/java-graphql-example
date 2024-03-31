@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -61,15 +60,21 @@ public class UsersDataFetcherIntegrationTest {
 
         assertThat(response.dataOrThrow().user).isNull();
         assertThat(response.errors).isNotEmpty();
-        assertThat(response.errors.get(0).getExtensions()).contains(entry("errorType", "BAD_REQUEST"));
+        assertThat(response.errors.get(0).getExtensions()).extracting("errorType").isEqualTo("BAD_REQUEST");
+        assertThat(response.errors.get(0).getExtensions()).extracting("debugInfo.errorCode").isEqualTo(
+                "INVALID_UUID");
+
     }
 
+    @Test
     public void WhenCallUserQueryWithNonExistentIdExpectNotFoundError() {
-        var response = syncClient.query(new UserQuery("invalidId"));
+        var response = syncClient.query(new UserQuery(UUID.randomUUID().toString()));
 
         assertThat(response.dataOrThrow().user).isNull();
         assertThat(response.errors).isNotEmpty();
-        assertThat(response.errors.get(0).getExtensions()).contains(entry("errorType", "NOT_FOUND"));
+        assertThat(response.errors.get(0).getExtensions()).extracting("errorType").isEqualTo("NOT_FOUND");
+        assertThat(response.errors.get(0).getExtensions()).extracting("debugInfo.errorCode").isEqualTo(
+                "USER_NOT_FOUND");
     }
 
     @Test
@@ -102,7 +107,9 @@ public class UsersDataFetcherIntegrationTest {
 
         assertThat(response.data).isNull();
         assertThat(response.errors).isNotEmpty();
-        assertThat(response.errors.get(0).getExtensions()).contains(entry("errorType", "BAD_REQUEST"));
+        assertThat(response.errors.get(0).getExtensions()).extracting("errorType").isEqualTo("BAD_REQUEST");
+        assertThat(response.errors.get(0).getExtensions()).extracting("debugInfo.errorCode").isEqualTo(
+                "INVALID_UUID");
     }
 
     @Test
@@ -113,7 +120,9 @@ public class UsersDataFetcherIntegrationTest {
 
         assertThat(response.data).isNull();
         assertThat(response.errors).isNotEmpty();
-        assertThat(response.errors.get(0).getExtensions()).contains(entry("errorType", "NOT_FOUND"));
+        assertThat(response.errors.get(0).getExtensions()).extracting("errorType").isEqualTo("NOT_FOUND");
+        assertThat(response.errors.get(0).getExtensions()).extracting("debugInfo.errorCode").isEqualTo(
+                "USER_NOT_FOUND");
     }
 
     @Test
@@ -152,7 +161,9 @@ public class UsersDataFetcherIntegrationTest {
 
         assertThat(response.data).isNull();
         assertThat(response.errors).isNotEmpty();
-        assertThat(response.errors.get(0).getExtensions()).contains(entry("errorType", "BAD_REQUEST"));
+        assertThat(response.errors.get(0).getExtensions()).extracting("errorType").isEqualTo("BAD_REQUEST");
+        assertThat(response.errors.get(0).getExtensions()).extracting("debugInfo.errorCode").isEqualTo(
+                "INVALID_UUID");
     }
 
     @Test
@@ -161,7 +172,9 @@ public class UsersDataFetcherIntegrationTest {
 
         assertThat(response.data).isNull();
         assertThat(response.errors).isNotEmpty();
-        assertThat(response.errors.get(0).getExtensions()).contains(entry("errorType", "NOT_FOUND"));
+        assertThat(response.errors.get(0).getExtensions()).extracting("errorType").isEqualTo("NOT_FOUND");
+        assertThat(response.errors.get(0).getExtensions()).extracting("debugInfo.errorCode").isEqualTo(
+                "USER_NOT_FOUND");
     }
 
     @Test
