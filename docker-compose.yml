@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  mysql:
+    image:
+      mysql:8.3.0
+    environment:
+      MYSQL_ROOT_PASSWORD: "password"
+      MYSQL_DATABASE: "users_example"
+      MYSQL_USER: "luis"
+      MYSQL_PASSWORD: "password"
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - mysql-network
+
+  adminer:
+    image: adminer:4.8.1
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mysql
+    networks:
+      - mysql-network
+
+volumes:
+  mysql_data:
+
+networks:
+  mysql-network:
+    driver: bridge
