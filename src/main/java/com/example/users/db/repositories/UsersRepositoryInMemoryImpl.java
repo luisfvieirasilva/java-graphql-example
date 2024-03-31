@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 @Repository
-public class UsersRepositoryImpl implements UsersRepository {
+public class UsersRepositoryInMemoryImpl implements UsersRepository {
 
     final HashMap<String, User> userById = new HashMap<>();
 
