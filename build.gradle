@@ -24,10 +24,12 @@ dependencyManagement {
 }
 
 dependencies {
+    implementation 'com.apollographql.apollo3:apollo-runtime-java'
     implementation 'com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation("com.apollographql.apollo3:apollo-runtime-java")
+    runtimeOnly 'com.mysql:mysql-connector-j'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
