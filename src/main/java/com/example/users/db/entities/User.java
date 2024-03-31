@@ -1,9 +1,16 @@
 package com.example.users.db.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
 import java.util.UUID;
 
+@Entity(name = "users")
 public class User {
-    private final UUID id;
+    @Id
+    @GeneratedValue
+    private UUID id;
     private String name;
     private String email;
 
@@ -14,7 +21,10 @@ public class User {
     }
 
     public User(String name, String email) {
-        this(UUID.randomUUID(), name, email);
+        this(null, name, email);
+    }
+
+    public User() {
     }
 
     public UUID getId() {

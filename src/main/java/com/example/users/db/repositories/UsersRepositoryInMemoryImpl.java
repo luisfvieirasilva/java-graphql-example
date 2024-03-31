@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.UUID;
 
 @Repository
 public class UsersRepositoryInMemoryImpl implements UsersRepository {
@@ -33,7 +34,7 @@ public class UsersRepositoryInMemoryImpl implements UsersRepository {
     @NotNull
     @Override
     public User createUser(String name, String email) {
-        User user = new User(name, email);
+        User user = new User(UUID.randomUUID(), name, email);
         userById.put(user.getId().toString(), user);
         return user;
     }
