@@ -33,7 +33,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-tasks.named('test') {
+def test = tasks.named('test') {
     useJUnitPlatform {
         filter {
             includeTestsMatching "*Test"
@@ -50,7 +50,9 @@ def integrationTest = tasks.register("integrationTest", Test) {
             includeTestsMatching '*IntegrationTest'
         }
     }
+    mustRunAfter test
 }
+
 tasks.named('check') {
     dependsOn integrationTest
 }
